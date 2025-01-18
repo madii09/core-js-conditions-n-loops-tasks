@@ -164,21 +164,17 @@ function convertNumberToString(numberStr) {
   };
 
   let result = '';
+  const numberLength = numberStr.length;
 
-  for (let i = 0; i < numberStr.length; i += 1) {
+  for (let i = 0; i < numberLength; i += 1) {
     const char = numberStr[i];
     if (digitWords[char]) {
-      result += `${digitWords[char]} `;
-    } else {
-      throw new Error(`Invalid character '${char}' in input`);
+      const emptySpace = i === numberLength - 1 ? '' : ' ';
+      result += digitWords[char] + emptySpace;
     }
   }
 
-  let trimmedResult = '';
-  for (let i = 0; i < result.length - 1; i += 1) {
-    trimmedResult += result[i];
-  }
-  return trimmedResult;
+  return result;
 }
 
 /**
@@ -218,8 +214,13 @@ function isPalindrome(str) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str[i] === letter) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -237,8 +238,27 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  if (digit < 0 || digit > 9) {
+    throw new Error(
+      'The digit parameter must be a single digit between 0 and 9.'
+    );
+  }
+
+  let currentNum = Math.abs(num);
+  if (currentNum === 0 && digit === 0) {
+    return true;
+  }
+
+  while (currentNum > 0) {
+    const currentDigit = currentNum % 10;
+    if (currentDigit === digit) {
+      return true;
+    }
+    currentNum = Math.floor(currentNum / 10);
+  }
+
+  return false;
 }
 
 /**
@@ -254,8 +274,25 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let totalSum = 0;
+  let leftSum = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    totalSum += arr[i];
+  }
+
+  for (let i = 0; i < arr.length; i += 1) {
+    const rightSum = totalSum - leftSum - arr[i];
+
+    if (leftSum === rightSum) {
+      return i;
+    }
+
+    leftSum += arr[i];
+  }
+
+  return -1;
 }
 
 /**
@@ -316,8 +353,23 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
+function sortByAsc() {
   throw new Error('Not implemented');
+
+  // const array = arr;
+  // const n = arr.length;
+
+  // for (let i = 0; i < n - 1; i += 1) {
+  //   for (let j = 0; j < n - i - 1; j += 1) {
+  //     if (arr[j] > arr[j + 1]) {
+  //       const temp = arr[j];
+  //       array[j] = arr[j + 1];
+  //       array[j + 1] = temp;
+  //     }
+  //   }
+  // }
+
+  // return arr;
 }
 
 /**
@@ -337,8 +389,26 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  const iter = Math.min(iterations, 2);
+
+  let result = str;
+  for (let i = 0; i < iter; i += 1) {
+    let evenChars = '';
+    let oddChars = '';
+
+    for (let j = 0; j < result.length; j += 1) {
+      if (j % 2 === 0) {
+        evenChars += result[j];
+      } else {
+        oddChars += result[j];
+      }
+    }
+
+    result = evenChars + oddChars;
+  }
+
+  return result;
 }
 
 /**
